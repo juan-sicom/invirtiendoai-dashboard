@@ -5,7 +5,7 @@ import pandas as pd
 import requests
 
 st.set_page_config(layout="centered")
-st.title("📈 Precio Limpio con Tooltip Inteligente")
+st.title("📈 Invirtiendo.gpt")
 
 # ========= BLOQUE DE AUTOCOMPLETADO CON CACHÉ =========
 
