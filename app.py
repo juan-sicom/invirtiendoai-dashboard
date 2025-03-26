@@ -1,6 +1,6 @@
 import streamlit as st
 from streamlit_echarts import st_echarts, JsCode
-from utils import calcular_bollinger, interpretar_bollinger, calcular_rsi, interpretar_rsi
+from utils import calcular_bollinger, interpretar_bollinger, calcular_rsi, interpretar_rsi, mostrar_diagnostico
 import yfinance as yf
 import pandas as pd
 import requests
@@ -210,6 +210,7 @@ if ticker:
             }
 
             st_echarts(option, height="400px")
+            
 
             # ========== GRÁFICO RSI SI SE ACTIVA ==========
             if mostrar_rsi:
@@ -252,7 +253,19 @@ if ticker:
                 }
 
                 st_echarts(rsi_option, height="200px")
-
+                
                 valor_rsi_actual = rsi.iloc[-1]
                 interpretacion = interpretar_rsi(valor_rsi_actual)
                 st.caption(f"📊 RSI actual: {valor_rsi_actual:.2f} → {interpretacion}")
+                
+            mostrar_diagnostico(
+                df=df,
+                ticker=ticker,
+                mostrar_rsi=mostrar_rsi,
+                rsi=rsi if mostrar_rsi else None,
+                mostrar_bollinger=mostrar_bollinger,
+                upper=upper if mostrar_bollinger else None,
+                lower=lower if mostrar_bollinger else None,
+            )
+
+                
