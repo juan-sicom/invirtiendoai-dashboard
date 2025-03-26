@@ -1,4 +1,6 @@
 import pandas as pd
+import streamlit as st
+import yfinance as yf
 
 def calcular_bollinger(close_series, window=20, num_std=2):
     sma = close_series.rolling(window).mean()
@@ -41,4 +43,29 @@ def interpretar_rsi(valor):
         return "🟢 Sobreventa"
     else:
         return "🟡 Zona neutra"
+    
+    
+def mostrar_diagnostico(df, ticker, mostrar_rsi=False, rsi=None, mostrar_bollinger=False, upper=None, lower=None):
+    st.markdown("---")
+    st.subheader("📋 Diagnóstico técnico y datos del activo")
+
+    ultimo_close = df["Close"].iloc[-1]
+    open_price = df["Open"].iloc[0]
+    min_price = df["Close"].min()
+    max_price = df["Close"].max()
+
+    try:
+        info = yf.Ticker(ticker).info
+        market_cap = info.get("marketCap", None)
+    except:
+        market_cap = None
+
+    st.markdown(f"**Apertura:** ${open_price:.2f}")
+    st.markdown(f"**Cierre reciente:** ${ultimo_close:.2f}")
+    st.markdown(f"**Máximo del período:** ${max_price:.2f}")
+    st.markdown(f"**Mínimo del período:** ${min_price:.2f}")
+    if market_cap:
+        st.markdown(f"**Capitalización bursátil:** ${market_cap:,.0f}")
+    else:
+        st.markdown(f"**Capitalización:** No disponible")
 
